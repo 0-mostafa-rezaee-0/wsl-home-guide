@@ -163,6 +163,9 @@ cdw() {   cd "$(wslpath "$1")"   }
 # Disable terminal bell sounds
 unsetopt beep
 
+#=== Node version manager and display settings ====================================================
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# DISPLAY configuration for WSL
+export DISPLAY=$(grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}'):0.0

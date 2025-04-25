@@ -31,6 +31,7 @@ This document provides an overview of the organization and purpose of files and 
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#31-organization-tips">3.1. Organization Tips</a><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#32-wsl-specific-notes">3.2. WSL-Specific Notes</a><br>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#33-maintenance-suggestions">3.3. Maintenance Suggestions</a><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#34-shell-environment-setup">3.4. Shell Environment Setup</a><br>
   </div>
 </details>
 &nbsp;
@@ -332,6 +333,57 @@ Specific project directories related to the SaveBirds application. The .app dire
   - Export environment variables: `env > ~/environment-snapshot.txt`
   - Record custom configurations and their purposes
   - Create a setup script that can restore your environment on a new system
+
+## 3.4. Shell Environment Setup
+
+### 3.4.1. Zsh and Oh-My-Zsh Installation
+
+In this environment, Zsh and Oh-My-Zsh are installed immediately after setting up Linux for an enhanced shell experience:
+
+```bash
+# Install Zsh
+sudo apt update
+sudo apt install -y zsh
+
+# Install Oh-My-Zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Set Zsh as default shell
+chsh -s $(which zsh)
+
+# To activate changes without logging out and back in
+exec zsh
+# Or alternatively, restart your terminal application
+```
+
+The `.oh-my-zsh` directory contains the framework files, while `.zshrc` contains customized configurations, including plugins, themes, and aliases.
+
+After making changes to `.zshrc`, remember to either source the file or restart the terminal:
+```bash
+# Apply changes to .zshrc in the current session
+source ~/.zshrc
+```
+
+### 3.4.2. Bash Configuration Best Practices
+
+Although Zsh is the primary shell, following best practices for `.bashrc` is important:
+
+1. **Maintain a minimal but functional `.bashrc`**: Even when not using Bash regularly, keeping a clean, minimal configuration ensures that if Bash is ever invoked, it will work correctly.
+
+2. **Options for handling `.bashrc` when using Zsh**:
+   - **Keep the default**: Retain the original `.bashrc` file unchanged
+   - **Create a minimal version**: Remove unnecessary configurations while keeping essential functionality
+   - **Add auto-switching**: Configure `.bashrc` to automatically switch to Zsh when Bash is started
+   - **Symlink to `.zshrc`**: (Not recommended due to syntax differences)
+
+3. **Our approach**: A minimal `.bashrc` that:
+   - Clearly documents that Zsh is the preferred shell
+   - Maintains basic terminal functionality
+   - Preserves essential environment variables (PATH, DISPLAY, etc.)
+   - Uses consistent section headers for readability
+   - Optionally includes code to automatically switch to Zsh
+
+This approach ensures that the system remains functional regardless of which shell is invoked, while making it clear that Zsh is the preferred environment.
 
 # 4. Git Dotfiles Backup System
 
