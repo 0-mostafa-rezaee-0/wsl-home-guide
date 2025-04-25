@@ -36,14 +36,25 @@ This document provides an overview of the organization and purpose of files and 
 &nbsp;
 
 <details>
-  <summary><a href="#4-windows-and-linux-file-system-integration"><i><b>4. Windows and Linux File System Integration</b></i></a></summary>
+  <summary><a href="#4-git-dotfiles-backup-system"><i><b>4. Git Dotfiles Backup System</b></i></a></summary>
   <div>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#41-understanding-wsl-file-system-structure">4.1. Understanding WSL File System Structure</a><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#42-file-path-conventions">4.2. File Path Conventions</a><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#43-performance-considerations">4.3. Performance Considerations</a><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#44-symlinks-and-integration">4.4. Symlinks and Integration</a><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#45-permission-differences">4.5. Permission Differences</a><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#46-best-practices-for-cross-platform-development">4.6. Best Practices for Cross-Platform Development</a><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#41-how-this-repository-is-set-up">4.1. How This Repository is Set Up</a><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#411-tracked-files">4.1.1. Tracked Files</a><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#412-backup-strategy">4.1.2. Backup Strategy</a><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#413-using-this-system">4.1.3. Using This System</a><br>
+  </div>
+</details>
+&nbsp;
+
+<details>
+  <summary><a href="#5-windows-and-linux-file-system-integration"><i><b>5. Windows and Linux File System Integration</b></i></a></summary>
+  <div>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#51-understanding-wsl-file-system-structure">5.1. Understanding WSL File System Structure</a><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#52-file-path-conventions">5.2. File Path Conventions</a><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#53-performance-considerations">5.3. Performance Considerations</a><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#54-symlinks-and-integration">5.4. Symlinks and Integration</a><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#55-permission-differences">5.5. Permission Differences</a><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#56-best-practices-for-cross-platform-development">5.6. Best Practices for Cross-Platform Development</a><br>
   </div>
 </details>
 &nbsp;
@@ -51,6 +62,8 @@ This document provides an overview of the organization and purpose of files and 
 # 1. About this Repository
 
 Information about this repository to give a birds-eye view to the reader. This guide maps out the structure of a typical WSL (Windows Subsystem for Linux) home directory, documenting both visible directories and hidden configuration files that are essential to system functionality.
+
+This repository also serves as a Git-based backup system for important configuration files (dotfiles) in the home directory. The repository is set up to track only specific configuration files while ignoring everything else.
 
 ## 1.1. Who Is This Tutorial For?
 
@@ -316,9 +329,60 @@ Specific project directories related to the SaveBirds application. The .app dire
   - Record custom configurations and their purposes
   - Create a setup script that can restore your environment on a new system
 
-# 4. Windows and Linux File System Integration
+# 4. Git Dotfiles Backup System
 
-## 4.1. Understanding WSL File System Structure
+## 4.1. How This Repository is Set Up
+
+This home directory is configured as a Git repository specifically for backing up important configuration files (dotfiles). The repository uses a special .gitignore configuration that ignores everything by default and only tracks specific files that are explicitly included.
+
+### 4.1.1. Tracked Files
+
+The following important configuration files are tracked by Git:
+- `README.md`: This documentation file
+- `.bashrc`: Bash shell configuration
+- `.zshrc`: Z shell configuration
+- `.profile`: Login shell configuration
+- `.bash_logout`: Commands executed when logging out of bash
+- `.gitconfig`: Global Git configuration
+- `.gitignore_global`: Global Git ignore patterns
+- `.inputrc`: Input configuration for command line
+- `.shell.pre-oh-my-zsh`: Shell configuration before Oh My Zsh
+- `.viminfo`: Vim editor information
+- `.gitignore`: The special ignore file that controls this repository
+
+### 4.1.2. Backup Strategy
+
+This repository allows you to:
+1. Track changes to important configuration files
+2. Roll back to previous versions if needed
+3. Easily sync your configuration across multiple machines
+4. Document your setup for future reference
+
+### 4.1.3. Using This System
+
+To back up your configuration:
+```bash
+# After making changes to any tracked file
+git add -u
+git commit -m "Update: [description of changes]"
+
+# To back up to a remote repository (recommended)
+git remote add origin [your-repo-url]
+git push -u origin main
+```
+
+To restore your configuration on a new machine:
+```bash
+# Clone your repository to your home directory
+git clone [your-repo-url] ~/dotfiles-temp
+cd ~/dotfiles-temp
+# Copy files to your home directory or use symlinks
+cp -r .* ~ 2>/dev/null || true
+```
+
+# 5. Windows and Linux File System Integration
+
+## 5.1. Understanding WSL File System Structure
 
 - **Linux root (`/`) vs. Windows drives**: In WSL, the Linux file system exists separately from Windows. The Linux root directory (`/`) is different from Windows drive letters.
 - **Accessing Windows files**: Windows drives are mounted under `/mnt/` in WSL:
@@ -326,7 +390,7 @@ Specific project directories related to the SaveBirds application. The .app dire
   - Windows `D:\` is accessible at `/mnt/d/` in WSL (if you have a D: drive)
 - **WSL filesystem location**: Your Linux files in WSL are stored in a virtual disk on Windows, usually at `%USERPROFILE%\AppData\Local\Packages\<DistroName>\LocalState\`
 
-## 4.2. File Path Conventions
+## 5.2. File Path Conventions
 
 | Windows | WSL (Linux) | Notes |
 |---------|-------------|-------|
@@ -336,7 +400,7 @@ Specific project directories related to the SaveBirds application. The .app dire
 | `D:\Projects` | `/mnt/d/Projects` | Secondary drive access |
 | `%USERPROFILE%` | `$HOME` or `~` | Home directory environment variables |
 
-## 4.3. Performance Considerations
+## 5.3. Performance Considerations
 
 - **Native filesystem performance**: 
   - Linux operations are faster in the WSL filesystem (`/home/mostafa/`)
@@ -347,7 +411,7 @@ Specific project directories related to the SaveBirds application. The .app dire
   - Keep large binaries, media files, or Windows-specific files in the Windows filesystem
   - Use symlinks when necessary to create references across systems
 
-## 4.4. Symlinks and Integration
+## 5.4. Symlinks and Integration
 
 - **WSL to Windows symlinks**: Created using `ln -s /mnt/c/path/to/windows/file ~/path/in/linux`
 - **Common symlinks**:
@@ -356,7 +420,7 @@ Specific project directories related to the SaveBirds application. The .app dire
 - **Windows to WSL access**: Access WSL files from Windows at `\\wsl$\Ubuntu\home\mostafa\`
 - **Environment sharing**: Consider sharing environment variables needed in both systems
 
-## 4.5. Permission Differences
+## 5.5. Permission Differences
 
 - **Windows permissions**: Based on Access Control Lists (ACLs)
 - **Linux permissions**: Based on user/group/others with read/write/execute bits
@@ -366,7 +430,7 @@ Specific project directories related to the SaveBirds application. The .app dire
   - Files created in `/mnt/c/` from WSL may have unexpected permissions in Windows
   - Files with sensitive permissions should be kept in the native filesystem
 
-## 4.6. Best Practices for Cross-Platform Development
+## 5.6. Best Practices for Cross-Platform Development
 
 - Keep build artifacts in the same filesystem as your build tools
 - Use WSL for Linux-focused development even when working with files in `/mnt/c/`
