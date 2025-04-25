@@ -1,0 +1,12 @@
+[user]
+	name = Mostafa Rezaee
+	email = mostafa.mohammadrezaee@gmail.com
+[init]
+	defaultBranch = main
+[core]
+	excludesfile = /home/mostafa/.gitignore_global
+	editor = code --wait
+[diff]
+	editor = code --wait
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE
