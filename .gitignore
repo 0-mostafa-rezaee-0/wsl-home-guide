@@ -4,6 +4,9 @@
 # Track README.md
 !README.md
 
+# Track banner.png
+!banner.png
+
 # Track shell configurations
 !.bashrc
 !.zshrc

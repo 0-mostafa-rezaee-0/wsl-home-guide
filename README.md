@@ -5,7 +5,7 @@ This will create your own copy of this project, which you can modify freely — 
 ---
 
 <p align="center">
-  <img src="banner.png" alt="banner" width="75%">
+  <img src="./banner.png" alt="banner" width="75%">
 </p>
 
 <h1 align="center">WSL Home Directory Structure & Windows Integration Guide</h1>
