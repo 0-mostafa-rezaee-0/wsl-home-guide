@@ -1,6 +1,18 @@
+## 🧰 How to Use This Template    
+Click the green **"Use this template"** button at the top of the page, then choose **"Create a new repository"**.   
+This will create your own copy of this project, which you can modify freely — no need to fork!   
+
+---
+
+<p align="center">
+  <img src="banner.png" alt="banner" width="75%">
+</p>
+
 <h1 align="center">WSL Home Directory Structure & Windows Integration Guide</h1>
 
 This document provides an overview of the organization and purpose of files and directories in my home directory (`/home/mostafa`) and how they integrate with the Windows file system.
+
+---
 
 ## Table of Contents
 
@@ -63,6 +75,8 @@ This document provides an overview of the organization and purpose of files and 
   </div>
 </details>
 &nbsp;
+
+---
 
 # 1. About this Repository
 
